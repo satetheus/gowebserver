@@ -1,15 +1,14 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
+	"log"
+	"net/http"
 )
 
-func helloWorld(w http.ResponseWriter, r *http.Request){
-    fmt.Fprintf(w, "Hello World")
-}
-
 func main() {
-    http.HandleFunc("/", helloWorld)
-    http.ListenAndServe(":8080", nil)
+	fs := http.FileServer(http.Dir("static"))
+	http.Handle("/", fs)
+
+	log.Println("Listening on port 8080.")
+	http.ListenAndServe(":8080", nil)
 }
